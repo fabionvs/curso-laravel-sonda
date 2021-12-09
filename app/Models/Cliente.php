@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use  App\Models\User;
 
 class Cliente extends Model
 {
@@ -17,9 +18,16 @@ class Cliente extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'nome',
         'cpf',
-        'email',
-        'opcoes',
+        'endereco',
+        'user_id'
     ];
+
+    /**
+     * Get the user record associated with the cliente.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

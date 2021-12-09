@@ -5,23 +5,37 @@ namespace App\Http\Services;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class ClienteService
 {
     public function index($request)
     {
-        $clientes = Cliente::all();
+        $clientes = Cliente::with('user')->get();
         return $clientes;
     }
-    public function store($request)
+
+    public function store(Request $request)
     {
-        $cliente = Cliente::create($request->all());
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $cliente = Cliente::create([
+            'cpf' => $request->cpf,
+            'endereco' => $request->endereco,
+            'user_id' => $user->id
+        ]);
+
         return $cliente;
     }
 
     public function show($id)
     {
-        $cliente = Cliente::where('id', $id)->first();
+        $cliente = Cliente::with('user')->where('id', $id)->first();
         return $cliente;
     }
 

@@ -15,11 +15,13 @@ class CreateClienteTable extends Migration
     {
         Schema::create('tb_cliente', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->string('email');
             $table->string('cpf', 14);
-            $table->json('opcoes')->nullable();
+            $table->string('endereco');
             $table->timestamps();
+
+
+            $table->bigInteger('user_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('tb_users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
